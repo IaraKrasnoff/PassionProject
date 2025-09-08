@@ -1,0 +1,86 @@
+erDiagram
+    PIZZA {
+        int pizza_id PK
+        string name
+        text description
+        decimal price
+        int category_id FK
+        string image_url
+        boolean is_available
+        datetime created_at
+        datetime updated_at
+    }
+    
+    CATEGORY {
+        int category_id PK
+        string name
+        text description
+        int display_order
+        boolean is_active
+        datetime created_at
+    }
+    
+    ORDER {
+        int order_id PK
+        string customer_name
+        string customer_phone
+        string customer_email
+        text delivery_address
+        decimal total_price
+        string status
+        text special_notes
+        datetime order_date
+        datetime estimated_ready_time
+    }
+    
+    ORDER_ITEM {
+        int order_item_id PK
+        int order_id FK
+        int pizza_id FK
+        int quantity
+        string size
+        decimal unit_price
+        text special_instructions
+    }
+    
+    CONTACT_MESSAGE {
+        int message_id PK
+        string customer_name
+        string customer_email
+        string customer_phone
+        text message
+        string status
+        datetime submitted_at
+        datetime responded_at
+    }
+    
+    ADMIN_USER {
+        int user_id PK
+        string username
+        string password_hash
+        string email
+        string role
+        boolean is_active
+        datetime created_at
+        datetime last_login
+    }
+    
+    SIZE_OPTION {
+        int size_id PK
+        string size_name
+        decimal price_multiplier
+        boolean is_available
+    }
+    
+    PIZZA_SIZE {
+        int pizza_size_id PK
+        int pizza_id FK
+        int size_id FK
+        decimal additional_price
+    }
+
+    CATEGORY ||--o{ PIZZA : contains
+    ORDER ||--o{ ORDER_ITEM : includes
+    PIZZA ||--o{ ORDER_ITEM : ordered_as
+    PIZZA ||--o{ PIZZA_SIZE : available_in
+    SIZE_OPTION ||--o{ PIZZA_SIZE : defines
