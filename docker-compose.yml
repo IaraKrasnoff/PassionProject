@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: pizzaria
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  backend:
+    build: ./Pizzeria/backend
+    environment:
+      DATABASE_URI: mysql+pymysql://root:password@db:3306/pizzaria
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+  # frontend:
+  #   build: ./Pizzeria/frontend
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+
+volumes:
+  dbdata:

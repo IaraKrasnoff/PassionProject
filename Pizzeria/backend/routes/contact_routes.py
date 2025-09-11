@@ -16,4 +16,4 @@ def create_contact():
     )
     db.session.add(contact)
     db.session.commit()
-    return contact_schema.jsonify(contact), 201
+    return jsonify(contact_schema.dump(contact)), 201

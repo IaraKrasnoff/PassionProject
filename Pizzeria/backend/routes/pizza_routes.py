@@ -10,9 +10,9 @@ pizzas_schema = PizzaSchema(many=True)
 @bp.route('', methods=['GET'])
 def list_pizzas():
     pizzas = Pizza.query.all()
-    return pizzas_schema.jsonify(pizzas)
+    return jsonify(pizzas_schema.dump(pizzas))
 
 @bp.route('/<int:pizza_id>', methods=['GET'])
 def get_pizza(pizza_id):
     pizza = Pizza.query.get_or_404(pizza_id)
-    return pizza_schema.jsonify(pizza)
+    return jsonify(pizza_schema.dump(pizza))

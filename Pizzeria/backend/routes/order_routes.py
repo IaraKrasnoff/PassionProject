@@ -1,10 +1,16 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from models import db, Order, OrderItem, Pizza
 from schemas import OrderSchema
 from decimal import Decimal
 
 bp = Blueprint('order', __name__, url_prefix='/api/orders')
 order_schema = OrderSchema()
+orders_schema = OrderSchema(many=True)
+
+@bp.route('', methods=['GET'])
+def get_orders():
+    orders = Order.query.all()
+    return jsonify(orders_schema.dump(orders)), 200
 
 @bp.route('', methods=['POST'])
 def create_order():
@@ -23,9 +29,9 @@ def create_order():
         price = pizza.price
         line_total = price * qty
         total += line_total
-        oi = OrderItem(order=order, pizza_id=pizza.id, quantity=qty, price=price)
+        oi = OrderItem(order_id=order.id, pizza_id=pizza.id, quantity=qty, price=price)
         db.session.add(oi)
 
     order.total = total
     db.session.commit()
-    return order_schema.jsonify(order), 201
+    return jsonify(order_schema.dump(order)), 201

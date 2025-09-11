@@ -1,0 +1,29 @@
+How to run locally (quick)
+
+1. Start MySQL and backend:
+
+    Option A (docker-compose): docker-compose up --build
+
+    Option B (locally): Run MySQL locally, set DATABASE_URI in .env, then in backend/:
+
+    python -m venv venv && source venv/bin/activate
+
+    pip install -r requirements.txt
+
+    flask db init && flask db migrate && flask db upgrade (or create tables from SQL)
+
+    python app.py
+
+2. Start frontend:
+
+    cd frontend
+
+    npm install
+
+    npm start
+
+3. Visit:
+
+    Frontend: http://localhost:3000
+
+    Backend API: http://localhost:5000/api/pizzas
